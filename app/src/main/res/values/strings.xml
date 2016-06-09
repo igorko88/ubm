@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">UBM</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="search_hint">Введіть текст для пошуку</string>
+
+    <string name="all_internats">Всі інтернати</string>
+    <string name="internat1">Залучанський дитячий будинок-інтернат</string>
+    <string name="internat2">Коломийський дитячий будинок-інтернат</string>
+    <string name="internat3">Рівненський обласний спеціалізований будинок дитини</string>
+    <string name="internat4">Роздільський дитячий будинок-інтернат</string>
+    <string name="internat5">Снятинський дитячий будинок-інтернат</string>
+    <string name="internat6">Голобський дитячий\n будинок-інтернат</string>
+
+    <string name="no_data_to_display">Немає даних для відображення</string>
+    <string name="please_wait">Будь ласка зачекайте...</string>
+
+    <string name="about_us">Про нас</string>
+    <string name="offline_mode">Перевірте під\'єднання до інтернету. Програма працює в оффлайн режимі</string>
+    <string name="our_address">Офіс УБМ</string>
+    <string name="geo">geo:</string>
+
+    <string name="city">Місто:</string>
+    <string name="address">Адреса:</string>
+    <string name="postal_code">Індекс:</string>
+    <string name="phones">Телефони:</string>
+
+    <!--About Us information for the first start-->
+    <string name="city_value">м. Івано-Франківськ</string>
+    <string name="address_value">БО Українська благодійницька мережа А/с 76, поштове відділення № 18, м. Івано-Франківськ</string>
+    <string name="postal_code_value">76018</string>
+    <string name="phone_value">Телефони:</string>
+
+    <string name="are_you_sure">"Ви справді бажаєте зателефонувати нам?"</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+
+    <string name="action_search">Sarch</string>
+    <string name="help_easily">Допомагати іншим - легко!</string>
+
+</resources>

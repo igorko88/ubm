@@ -1,0 +1,34 @@
+<resources>
+    <!--<string name="app_name">UBM</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="search_hint">Enter search text</string>
+    <string name="offline_mode">Check the internet connection. Application working in the offline mode</string>
+
+    <string name="all_internats">All internats</string>
+    <string name="no_data_to_display">There are no data to display</string>
+    <string name="please_wait">Please wait...</string>
+
+    <string name="about_us">About2 us</string>
+    <string name="our_address">Office UBM</string>
+    <string name="geo">geo:</string>
+
+    <string name="city">City:</string>
+    <string name="address">Address:</string>
+    <string name="postal_code">Postal code:</string>
+    <string name="phones">Phones:</string>
+
+    &lt;!&ndash;About Us information for the first start&ndash;&gt;
+    <string name="city_value">Ivano-Frankivs`k city</string>
+    <string name="address_value">Ukrainian Philanthropic Network 76 Post box No.76, post office No.18 Ivano-Frankivsk Ukraine</string>
+    <string name="postal_code_value">76018</string>
+    <string name="phone_value">Phones:</string>
+
+    <string name="are_you_sure">"Are you sure want to call us?"</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="help_easily">To help others easily!</string>-->
+
+</resources>
