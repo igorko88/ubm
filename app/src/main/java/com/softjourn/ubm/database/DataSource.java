@@ -1,9 +1,5 @@
 package com.softjourn.ubm.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,9 +7,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.softjourn.ubm.beans.Internat;
-import com.softjourn.ubm.beans.about.About;
 import com.softjourn.ubm.beans.Need;
+import com.softjourn.ubm.beans.about.About;
 import com.softjourn.ubm.beans.about.Phone;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataSource {
 

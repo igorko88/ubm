@@ -31,7 +31,5 @@
 
         <activity android:name=".activities.NeedActivity"/>
 
-        <service android:name=".services.LoadDataService" />
-
     </application>
 </manifest>

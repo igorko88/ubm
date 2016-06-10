@@ -1,18 +1,16 @@
 package com.softjourn.ubm.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
 import com.softjourn.ubm.R;
 import com.softjourn.ubm.adapters.CursorPagerAdapter;
 import com.softjourn.ubm.database.DataSource;

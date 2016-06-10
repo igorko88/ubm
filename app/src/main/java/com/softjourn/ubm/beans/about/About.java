@@ -1,6 +1,5 @@
 package com.softjourn.ubm.beans.about;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

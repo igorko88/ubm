@@ -502,15 +502,20 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mNeedsListView.setAdapter(mNeedsAdapter);
         mSwipeRefreshLayout.setRefreshing(false);
 
-        if (mMenuClick == true) {
-            mNeedsListView.setSelection(0);
-        } else {
-            mNeedsListView.setSelection(mSelectedNeedListPosition);
-        }
+        setSelectedNeed();
 
         setLastUrls(mLastUrls);
         hideProgessDialog();
     }
+
+    private void setSelectedNeed(){
+        if (mMenuClick) {
+            mNeedsListView.setSelection(0);
+        } else {
+            mNeedsListView.setSelection(mSelectedNeedListPosition);
+        }
+    }
+
 
     private void displayAllNeeds(ArrayList<String> lastUrls) {
         Cursor allNeedsCursor;
@@ -525,14 +530,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
 
         mNeedsAdapter.changeCursor(allNeedsCursor);
-
-
-        if (mMenuClick == true) {
-            mNeedsListView.setSelection(0);
-        } else {
-            mNeedsListView.setSelection(mSelectedNeedListPosition);
-        }
-
+        setSelectedNeed();
         hideProgessDialog();
     }
 
@@ -551,12 +549,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
 
         mNeedsAdapter.changeCursor(oneNeedsCursor);
-
-        if (mMenuClick == true) {
-            mNeedsListView.setSelection(0);
-        } else {
-            mNeedsListView.setSelection(mSelectedNeedListPosition);
-        }
+        setSelectedNeed();
     }
 
     private void displayAboutInfo() {

@@ -15,12 +15,9 @@ import com.softjourn.ubm.database.DataBaseHelper;
 import com.softjourn.ubm.utils.ExtraNames;
 import com.softjourn.ubm.utils.Utils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class NeedSlideFragment extends Fragment implements ExtraNames {
 

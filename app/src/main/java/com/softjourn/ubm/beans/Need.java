@@ -2,9 +2,6 @@ package com.softjourn.ubm.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.gson.Gson;
-
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**

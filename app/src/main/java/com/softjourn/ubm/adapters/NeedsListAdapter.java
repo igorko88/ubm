@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.softjourn.ubm.R;
 import com.softjourn.ubm.database.DataBaseHelper;
 import com.softjourn.ubm.utils.Utils;

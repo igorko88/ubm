@@ -4,9 +4,7 @@ import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
 import com.softjourn.ubm.R;
-import com.softjourn.ubm.application.AppController;
 import com.softjourn.ubm.database.DataSource;
 
 import java.util.ArrayList;
