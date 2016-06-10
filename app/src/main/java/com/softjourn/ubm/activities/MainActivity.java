@@ -188,20 +188,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         } else {
             Toast.makeText(getApplicationContext(), R.string.offline_mode, Toast.LENGTH_SHORT).show();
-
-            ArrayList<String> lastUrls = new ArrayList<String>();
-            lastUrls.add(Consts.ALL_NEEDS_URL);
-            setLastUrls(lastUrls);
-
-            mInternats = mDataSource.getAllInternats();
-            mLeftMenuItems = new ArrayList<String>();
-            if (mInternats != null) {
-                mLeftMenuItems.add(getString(R.string.all_internats));
-                for (int i = 1; i <= mInternats.size(); i++) {
-                    mLeftMenuItems.add(mInternats.get(i - 1).getName());
-                }
-                mLeftMenuItems.add(getString(R.string.about_us));
-            }
+            initNeedsList();
             initInternatsMenu();
         }
 
@@ -260,8 +247,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         int aboutMenuItemPosition = mLeftMenuItems.size() - 1;
 
         if (menuPosition == allInternatsMenuItemPosition) {
-
-
             if(!isSearch) {
                 showProgessDialog();
                 if (Utils.isOnline(getApplicationContext())) {
@@ -282,7 +267,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         } else {
 
             mInternatId = menuPosition - 1;
-            if (Utils.isOnline(getApplicationContext())) {
+            if (Utils.isOnline(getApplicationContext()) && !isSearch) {
                 showProgessDialog();
                 new JsonRequests().loadOneInternatNeedsRequest(getApplicationContext(), mInternatId, MainActivity.this);
             } else {
@@ -492,6 +477,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             public boolean onMenuItemClick(MenuItem item) {
                 mSelectedSearch = "";
                 mInternatId = itemId;
+                isSearch = false;
                 selectItem(itemId, false);
                 mMenuClick = true;
                 mNeedsListView.setSelection(0);
