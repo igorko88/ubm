@@ -352,7 +352,10 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     }
 
     private void initNeedsListView(){
-        mNeedsListView.setAdapter(mNeedsAdapter);
+
+        if(!isSearch) {
+            mNeedsListView.setAdapter(mNeedsAdapter);
+        }
 
         if(mMenuClick) {
             mNeedsListView.setSelection(0);
