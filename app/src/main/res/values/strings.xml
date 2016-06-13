@@ -16,6 +16,9 @@
     <string name="no_data_to_display">Немає даних для відображення</string>
     <string name="please_wait">Будь ласка зачекайте...</string>
 
+    <string name="permission_save_data_explanation">Ці права потрібні для запису даних в БД</string>
+    <string name="btn_title_ok">OK</string>
+
     <string name="about_us">Про нас</string>
     <string name="offline_mode">Перевірте під\'єднання до інтернету. Програма працює в оффлайн режимі</string>
     <string name="our_address">Офіс УБМ</string>
@@ -40,3 +43,4 @@
     <string name="help_easily">Допомагати іншим - легко!</string>
 
 </resources>
+

@@ -274,7 +274,7 @@ public class JsonRequests implements Consts {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-//                        if(isResponseChanged == true){
+                        if(isResponseChanged == true){
                             Log.d(TAG, response.toString());
 
                             ArrayList<Need> needs = null;
@@ -286,7 +286,7 @@ public class JsonRequests implements Consts {
                             }
 
                             new DataSource(context).writeNeedsTodb(Consts.MORE_NEEDS_URL, needs);
-//                        }
+                        }
                         listener.onLoadMoreCompleted(Consts.MORE_NEEDS_URL);
                     }
                 }, new Response.ErrorListener() {

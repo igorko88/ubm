@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/needs_backgrouncd_color"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.softjourn.myapplication.MainActivity"
+    tools:context="com.softjourn.ubm.activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <android.support.v4.widget.SwipeRefreshLayout

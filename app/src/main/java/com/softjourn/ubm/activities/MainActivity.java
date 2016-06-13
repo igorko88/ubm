@@ -1,14 +1,20 @@
 package com.softjourn.ubm.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -43,6 +49,8 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ExtraNames, Consts, NavigationView.OnNavigationItemSelectedListener, JsonRequests.OnTaskCompleted {
 
+    private static final int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 0;
+
     private Bundle mSavedInstanceState;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private NavigationView mDrawerList;
@@ -63,14 +71,19 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private Fragment mAboutFragment;
     private boolean mMenuClick;
     private DrawerLayout mDrawerLayout;
+    private CoordinatorLayout mCoordinatorLayout;
 
     boolean isLoad = false;
     boolean isSearch = false;
+    private Snackbar mSnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        allowPermissions();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -231,7 +244,8 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_frame, fragment).commitAllowingStateLoss();
 
         if (mLeftMenuItems != null) {
             setTitle(mLeftMenuItems.get(menuPosition));
@@ -530,6 +544,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
 
         mNeedsAdapter.changeCursor(allNeedsCursor);
+
         setSelectedNeed();
         hideProgessDialog();
     }
@@ -549,6 +564,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
 
         mNeedsAdapter.changeCursor(oneNeedsCursor);
+        mNeedsAdapter.notifyDataSetChanged();
         setSelectedNeed();
     }
 
@@ -596,6 +612,77 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         outState.putInt(INTERNAT_ID, mInternatId);
         outState.putString(TITLE_EXTRA, getTitle().toString());
         outState.putBoolean(IS_SEARCH_EXTRA, isSearch);
+    }
+
+    protected void allowPermissions(){
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                showRequestPermissionExplanation();
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
+
+                // PERMISSIONS_REQUEST_EXTERNAL_STORAGE is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+    private void showRequestPermissionExplanation() {
+        mSnackbar = Snackbar
+                .make(mCoordinatorLayout, getString(R.string.permission_save_data_explanation), Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.btn_title_ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        requestAppRunTimePermissions();
+                        mSnackbar.dismiss();
+                    }
+                });
+        mSnackbar.show();
+    }
+
+    private void requestAppRunTimePermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }
 

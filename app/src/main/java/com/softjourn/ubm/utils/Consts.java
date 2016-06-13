@@ -6,7 +6,7 @@ package com.softjourn.ubm.utils;
 public interface Consts {
 
     String ALL_INTERTATS_URL = "http://beta.json-generator.com/api/json/get/4k2DEQNZb";
-    String ALL_NEEDS_URL = "http://beta.json-generator.com/api/json/get/VJS0XgVZb";
+    String ALL_NEEDS_URL = "http://beta.json-generator.com/api/json/get/4kYUYODN-";
     String ONE_INTERNAT_NEEDS_URL = "http://beta.json-generator.com/api/json/get/V1djfugeb";
     String SEARCH_NEEDS_URL = "http://beta.json-generator.com/api/json/get/EkWBsrLmb";
     String MORE_NEEDS_URL = "http://beta.json-generator.com/api/json/get/EJP5XDeeW";
