@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -32,6 +33,10 @@ import android.widget.AdapterView;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.softjourn.ubm.R;
 import com.softjourn.ubm.adapters.NeedsListAdapter;
 import com.softjourn.ubm.application.AppController;
@@ -261,14 +266,14 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         int aboutMenuItemPosition = mLeftMenuItems.size() - 1;
 
         if (menuPosition == allInternatsMenuItemPosition) {
-            if(!isSearch) {
+            if (!isSearch) {
                 showProgessDialog();
                 if (Utils.isOnline(getApplicationContext())) {
                     new JsonRequests().loadAllNeedsRequest(getApplicationContext(), MainActivity.this);
                 } else {
                     displayAllNeeds(getLastUrls());
                 }
-            }else{
+            } else {
                 displayAllNeeds(getLastUrls());
             }
 
@@ -350,15 +355,15 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void initNeedsListView(){
+    private void initNeedsListView() {
 
-        if(!isSearch) {
+        if (!isSearch) {
             mNeedsListView.setAdapter(mNeedsAdapter);
         }
 
-        if(mMenuClick) {
+        if (mMenuClick) {
             mNeedsListView.setSelection(0);
-        }else{
+        } else {
             mNeedsListView.setSelection(mSelectedNeedListPosition);
         }
 
@@ -368,7 +373,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     public void onLoadAllNeedsCompleted(String allNeedsUrl) {
         ArrayList<String> lastUrls = getLastUrls();
-        if(!lastUrls.contains(allNeedsUrl)) {
+        if (!lastUrls.contains(allNeedsUrl)) {
             lastUrls.add(allNeedsUrl);
         }
 
@@ -381,7 +386,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     public void onLoadOneInternatNeedsCompleted(String oneInternatNeeds, int internatId) {
         ArrayList<String> lastUrls = getLastUrls();
-        if(!lastUrls.contains(oneInternatNeeds)) {
+        if (!lastUrls.contains(oneInternatNeeds)) {
             lastUrls.add(oneInternatNeeds);
         }
         displayOneInternatNeeds(lastUrls, internatId);
@@ -393,7 +398,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     public void onLoadMoreCompleted(String moreNeedsUrl) {
         ArrayList<String> lastUrls = getLastUrls();
-        if(!lastUrls.contains(moreNeedsUrl)) {
+        if (!lastUrls.contains(moreNeedsUrl)) {
             lastUrls.add(moreNeedsUrl);
         }
 
@@ -432,7 +437,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     public void onLoadUpdateCompleted(String lastUrl) {
         ArrayList<String> lastUrls = new ArrayList<String>();
-        if(!lastUrls.contains(lastUrl)) {
+        if (!lastUrls.contains(lastUrl)) {
             lastUrls.add(lastUrl);
         }
         displayAllNeeds(lastUrls);
@@ -522,7 +527,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         hideProgessDialog();
     }
 
-    private void setSelectedNeed(){
+    private void setSelectedNeed() {
         if (mMenuClick) {
             mNeedsListView.setSelection(0);
         } else {
@@ -533,9 +538,9 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private void displayAllNeeds(ArrayList<String> lastUrls) {
         Cursor allNeedsCursor;
-        if(Utils.isOnline(getApplicationContext())){
+        if (Utils.isOnline(getApplicationContext())) {
             allNeedsCursor = getAllNeedsCursor(lastUrls);
-        }else{
+        } else {
             allNeedsCursor = getAllNeedsCursor();
         }
 
@@ -553,9 +558,9 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         Cursor oneNeedsCursor;
 
-        if(Utils.isOnline(getApplicationContext())){
+        if (Utils.isOnline(getApplicationContext())) {
             oneNeedsCursor = getCursorByUrlInternatId(lastUrls, internatId);
-        }else{
+        } else {
             oneNeedsCursor = getCursorByInternatId(internatId);
         }
 
@@ -614,31 +619,18 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         outState.putBoolean(IS_SEARCH_EXTRA, isSearch);
     }
 
-    protected void allowPermissions(){
+    protected void allowPermissions() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
                 showRequestPermissionExplanation();
-
             } else {
-
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
-
-                // PERMISSIONS_REQUEST_EXTERNAL_STORAGE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
     }
@@ -659,30 +651,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private void requestAppRunTimePermissions() {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
     }
 }
 

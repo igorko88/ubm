@@ -62,7 +62,7 @@ public class JsonRequests implements Consts {
 //            isResponseChanged = false;
 //        }
 
-        boolean isResponseChanged = false;
+        boolean isResponseChanged = true;
 
         return isResponseChanged;
     }
@@ -77,8 +77,7 @@ public class JsonRequests implements Consts {
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
 
-                        System.out.print(isResponseChanged);
-                        if(isResponseChanged == true){
+                        if(isResponseChanged){
 
                             ArrayList<Internat> internats = null;
                             try {
@@ -119,7 +118,7 @@ public class JsonRequests implements Consts {
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
 
-                        if(isResponseChanged == true){
+                        if(isResponseChanged){
                             ArrayList<Need> needs = null;
                             try {
                                 needs = new ObjectMapper().readValue(String.valueOf(response), new TypeReference<List<Need>>() {
@@ -162,7 +161,7 @@ public class JsonRequests implements Consts {
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
 
-                        if(isResponseChanged == true){
+                        if(isResponseChanged){
                             ArrayList<Need> needs = null;
                             try {
                                 needs = new ObjectMapper().readValue(String.valueOf(response), new TypeReference<List<Need>>() {
@@ -200,7 +199,7 @@ public class JsonRequests implements Consts {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
-                        if(isResponseChanged == true){
+                        if(isResponseChanged){
 
                             ArrayList<Need> needs = null;
                             try {
@@ -238,7 +237,7 @@ public class JsonRequests implements Consts {
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
-                        if(isResponseChanged == true){
+                        if(isResponseChanged){
                             ArrayList<Need> needs = null;
                             try {
                                 needs = new ObjectMapper().readValue(String.valueOf(response), new TypeReference<List<Need>>() {
@@ -268,13 +267,10 @@ public class JsonRequests implements Consts {
     }
 
     public void loadMoreRequest(final Context context, final OnTaskCompleted listener) {
-        final boolean isResponseChanged = false;
-
         JsonArrayRequest req = new JsonArrayRequest(Consts.MORE_NEEDS_URL,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        if(isResponseChanged == true){
                             Log.d(TAG, response.toString());
 
                             ArrayList<Need> needs = null;
@@ -286,7 +282,6 @@ public class JsonRequests implements Consts {
                             }
 
                             new DataSource(context).writeNeedsTodb(Consts.MORE_NEEDS_URL, needs);
-                        }
                         listener.onLoadMoreCompleted(Consts.MORE_NEEDS_URL);
                     }
                 }, new Response.ErrorListener() {
@@ -315,7 +310,7 @@ public class JsonRequests implements Consts {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-//                        if(isResponseChanged == true){
+                        if(isResponseChanged){
 
                             About about = null;
                             try {
@@ -326,7 +321,7 @@ public class JsonRequests implements Consts {
                             }
 
                             new DataSource(context).createAbout(about);
-//                        }
+                        }
                         listener.onLoadAboutInfo();
                     }
                 }, new Response.ErrorListener() {

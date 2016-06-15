@@ -1,5 +1,6 @@
 package com.softjourn.ubm.beans.about;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class About {
     private int postal_code;
     private String email;
     private int phoneId;
-    private List<Phone> phones;
+    private ArrayList<Phone> phones;
 
     public int getId() {
         return id;
@@ -74,11 +75,11 @@ public class About {
         this.postal_code = postal_code;
     }
 
-    public List<Phone> getPhones() {
+    public ArrayList<Phone> getPhones() {
         return phones;
     }
 
-    public void setPhones(List<Phone> phones) {
+    public void setPhones(ArrayList<Phone> phones) {
         this.phones = phones;
     }
 

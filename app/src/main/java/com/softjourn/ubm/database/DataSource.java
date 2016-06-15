@@ -12,7 +12,6 @@ import com.softjourn.ubm.beans.about.About;
 import com.softjourn.ubm.beans.about.Phone;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DataSource {
 
@@ -39,7 +38,7 @@ public class DataSource {
             mDb.close();
     }
 
-    public void writeNeedsTodb(String updateUrl, List<Need> needs){
+    public void writeNeedsTodb(String updateUrl, ArrayList<Need> needs){
         if (needs != null) {
             //write data to db
             openRead();
@@ -64,7 +63,7 @@ public class DataSource {
         return true;
     }
 
-    public boolean createInternatsList(List<Internat> internatsList) {
+    public boolean createInternatsList(ArrayList<Internat> internatsList) {
         openWrite();
         mDb.beginTransaction();
 
@@ -83,7 +82,7 @@ public class DataSource {
         return true;
     }
 
-    public boolean createNeedsList(List<Need> needsList, String url) {
+    public boolean createNeedsList(ArrayList<Need> needsList, String url) {
         openWrite();
         mDb.beginTransaction();
 
@@ -105,7 +104,7 @@ public class DataSource {
     private long insertObjectAbout(About about) {
         long insertId = (-2);
 
-        List<Phone> phones = about.getPhones();
+        ArrayList<Phone> phones = about.getPhones();
         if (phones != null) {
             insertId = insertOrUpdateTablePhones(phones);
         }
@@ -155,7 +154,7 @@ public class DataSource {
         return returnedId;
     }
 
-    private long insertOrUpdateTablePhones(List<Phone> phones) {
+    private long insertOrUpdateTablePhones(ArrayList <Phone> phones) {
         long returnedId = 0;
         ContentValues contentValues = new ContentValues();
 
@@ -240,10 +239,10 @@ public class DataSource {
         return about;
     }
 
-    private List<Phone> getPhoneList(){
+    private ArrayList<Phone> getPhoneList(){
         String selectQuery = "SELECT * FROM " + DataBaseHelper.TABLE_PHONES;
         Cursor phoneCursor = mDb.rawQuery(selectQuery, null);
-        List<Phone> phonesList = new ArrayList<Phone>();
+        ArrayList<Phone> phonesList = new ArrayList<Phone>();
         if (phoneCursor.moveToFirst()) {
             do {
                 Phone phone = cursorToPhone(phoneCursor);
@@ -292,9 +291,9 @@ public class DataSource {
         } else return null;
     }
 
-    public List<Internat> getAllInternats() {
+    public ArrayList<Internat> getAllInternats() {
 
-        List<Internat> internatList = new ArrayList<Internat>();
+        ArrayList<Internat> internatList = new ArrayList<Internat>();
         String selectQuery = "SELECT  * FROM " + DataBaseHelper.TABLE_INTERNATS;
 
         openRead();
@@ -342,7 +341,7 @@ public class DataSource {
     }
 
     public Cursor getNeedsUIByUrlInternatId(ArrayList<String> lastUrls, long internat_id) {
-        List<Need> needsList = new ArrayList<Need>();
+        ArrayList<Need> needsList = new ArrayList<Need>();
 
         openRead();
         Cursor cursor;
@@ -388,7 +387,7 @@ public class DataSource {
         return cursor;
     }
 
-    public Cursor getNeedUI(List<String> urls) {
+    public Cursor getNeedUI(ArrayList<String> urls) {
         openRead();
 
         String query = "SELECT * FROM needs";

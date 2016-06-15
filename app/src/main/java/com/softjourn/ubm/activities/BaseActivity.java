@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 import com.softjourn.ubm.R;
 import com.softjourn.ubm.database.DataSource;
 
@@ -22,10 +23,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDataSource = new DataSource(getBaseContext());
+        mDataSource = new DataSource(BaseActivity.this);
     }
 
-    public Cursor getFoundNeedsCursor(ArrayList<String> lastUrls){
+    public Cursor getFoundNeedsCursor(ArrayList<String> lastUrls) {
         mNeedsCursor = mDataSource.getFoundNeewsByUrl(lastUrls);
 
         return mNeedsCursor;
@@ -42,19 +43,19 @@ public class BaseActivity extends AppCompatActivity {
         return mNeedsCursor;
     }
 
-    public Cursor getCursorByUrlInternatId(ArrayList<String> lastUrls, int internatId){
+    public Cursor getCursorByUrlInternatId(ArrayList<String> lastUrls, int internatId) {
         mNeedsCursor = mDataSource.getNeedsUIByUrlInternatId(lastUrls, internatId);
 
-        return  mNeedsCursor;
+        return mNeedsCursor;
     }
 
-    public Cursor getCursorByInternatId(int internatId){
+    public Cursor getCursorByInternatId(int internatId) {
         mNeedsCursor = mDataSource.getNeedsByInternatId(internatId);
 
-        return  mNeedsCursor;
+        return mNeedsCursor;
     }
 
-    public void clearDB(){
+    public void clearDB() {
         mDataSource.removeAll();
     }
 
@@ -66,8 +67,8 @@ public class BaseActivity extends AppCompatActivity {
         mLastUrls = lastUrls;
     }
 
-    public void clearLastUrls(){
-        if(mLastUrls != null) {
+    public void clearLastUrls() {
+        if (mLastUrls != null) {
             mLastUrls.clear();
         }
     }
