@@ -38,7 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         return mDatabaseManager.getOneInternatNeedsList(lastUrls, internatId);
     }
 
-    public Cursor getAllNeeds(List<String> lastUrls) {
+    public Cursor getAllNeedsCursor(List<String> lastUrls) {
         mNeedsCursor = mDataSource.getAllNeeds(lastUrls);
 
         return mNeedsCursor;

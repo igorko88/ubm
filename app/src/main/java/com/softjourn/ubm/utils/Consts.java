@@ -9,7 +9,7 @@ public interface Consts {
     String ALL_NEEDS_URL = "http://beta.json-generator.com/api/json/get/4kYUYODN-";
     String ONE_INTERNAT_NEEDS_URL = "http://beta.json-generator.com/api/json/get/V1djfugeb";
     String SEARCH_NEEDS_URL = "http://beta.json-generator.com/api/json/get/EkWBsrLmb";
-    String MORE_NEEDS_URL = "http://beta.json-generator.com/api/json/get/EJP5XDeeW";
+    String MORE_NEEDS_URL = "http://beta.json-generator.com/api/json/get/NkNtcRhNb";
     String ABOUT_US_URL = "http://beta.json-generator.com/api/json/get/EJ0ACluGZ";
 
     int RESULT_CODE = 10;

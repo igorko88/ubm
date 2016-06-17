@@ -509,13 +509,11 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             mNeedsAdapter = new NeedsListAdapter(MainActivity.this, allNeeds);
             mNeedsListView.setAdapter(mNeedsAdapter);
         }else {
-            allNeeds = getNeeds(urlList);
-            mNeedsAdapter.setData(allNeeds);
-            mNeedsAdapter.notifyDataSetChanged();
+            mNeedsAdapter.updateList(allNeeds);
+            setLastUrls(urlList);
         }
 
         setLastUrls(urlList);
-
         hideProgessDialog();
         mSwipeRefreshLayout.setRefreshing(false);
 
@@ -530,7 +528,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             mNeedsListView.setAdapter(mNeedsAdapter);
         }else {
             oneInternatNeeds = getOneInternatNeeds(urlList, internatId);
-            mNeedsAdapter.setData(oneInternatNeeds);
+//            mNeedsAdapter.setData(oneInternatNeeds);
             mNeedsAdapter.notifyDataSetChanged();
         }
 

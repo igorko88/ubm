@@ -1,5 +1,6 @@
 package com.softjourn.ubm.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -18,14 +19,15 @@ import java.util.List;
 /**
  * Created by Inet on 16.06.2016.
  */
+
+
 public class NeedsListAdapter extends BaseAdapter {
-
+    private Activity mContext;
     private List<Need> mNeedList;
-    private Context mContext;
 
-    public NeedsListAdapter(Context context, List<Need> needList) {
+    public NeedsListAdapter(Activity context, List<Need> list) {
         mContext = context;
-        mNeedList = needList;
+        mNeedList = list;
     }
 
     @Override
@@ -34,44 +36,44 @@ public class NeedsListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Need getItem(int position) {
-        return mNeedList.get(position);
+    public Object getItem(int pos) {
+        return mNeedList.get(pos);
     }
 
     @Override
     public long getItemId(int position) {
-        return mNeedList.get(position).getId();
+        return position;
     }
 
-    public void setData(List<Need> needs){
+    public void updateList(List<Need> needs) {
         mNeedList = needs;
         notifyDataSetChanged();
     }
 
-    static class ViewHolder {
-        TextView needName;
-        ImageView needPoster;
-    }
-
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View v = convertView;
         ViewHolder viewHolder;
-
-        if (convertView == null){
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.need_list_item, viewGroup, false);
-            viewHolder = new ViewHolder();
-
-            viewHolder.needName = (TextView) convertView.findViewById(R.id.need_name);
-            viewHolder.needPoster = (ImageView) convertView.findViewById(R.id.need_poster);
-            convertView.setTag(viewHolder);
+        if (convertView == null) {
+            LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            v = li.inflate(R.layout.need_list_item, null);
+            viewHolder = new ViewHolder(v);
+            v.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (ViewHolder) v.getTag();
         }
+        viewHolder.needName.setText(mNeedList.get(position).getName());
+        Utils.getImageLoader().displayImage(Uri.decode(mNeedList.get(position).getImageUrl()), viewHolder.needPoster, Utils.getImageLoaderOptions());
+        return v;
+    }
+}
 
-        viewHolder.needName.setText(getItem(position).getText());
-        Utils.getImageLoader().displayImage(Uri.decode(getItem(position).getImageUrl()), viewHolder.needPoster, Utils.getImageLoaderOptions());
+class ViewHolder {
+    TextView needName;
+    ImageView needPoster;
 
-        return convertView;
+    public ViewHolder(View base) {
+        needName = (TextView) base.findViewById(R.id.need_name);
+        needPoster = (ImageView) base.findViewById(R.id.need_poster);
     }
 }

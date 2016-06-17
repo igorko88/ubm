@@ -58,7 +58,7 @@ public class NeedActivity extends BaseActivity implements ExtraNames, Consts {
 
         mDataSource = new DataSource(this);
         mDataSource.openRead();
-        mNeedsCursor = getAllNeeds(mLastUrls);
+        mNeedsCursor = getAllNeedsCursor(mLastUrls);
 
         mPagerAdapter = new CursorPagerAdapter(getSupportFragmentManager(), NeedSlideFragment.class, mNeedsCursor);
         mPager = (ViewPager) findViewById(R.id.needs_pager);
