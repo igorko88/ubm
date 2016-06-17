@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:padding="10dp"
+    android:padding="@dimen/scroll_view_padding"
     android:scrollbarStyle="outsideOverlay">
 
     <LinearLayout
@@ -15,13 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="@dimen/about_table_padding">
 
             <TableRow
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/about_table_row_margin"
                 android:gravity="center_vertical"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="@dimen/about_table_row_padding"
+                android:paddingTop="@dimen/about_table_row_padding">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -32,15 +32,15 @@
                     android:id="@+id/city"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="@dimen/about_table_padding"
                     android:text="@string/city_value"/>
             </TableRow>
 
             <TableRow
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/about_table_row_margin"
                 android:gravity="center_vertical"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="@dimen/about_table_row_padding"
+                android:paddingTop="@dimen/about_table_row_padding">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -51,15 +51,15 @@
                     android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="@dimen/about_table_padding"
                     android:text="@string/address_value"/>
             </TableRow>
 
             <TableRow
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/about_table_row_margin"
                 android:gravity="center_vertical"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="@dimen/about_table_row_padding"
+                android:paddingTop="@dimen/about_table_row_padding">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -70,16 +70,16 @@
                     android:id="@+id/postal_code"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:paddingLeft="10dp"
+                    android:paddingLeft="@dimen/about_table_row_padding"
                     android:text="@string/postal_code_value"/>
             </TableRow>
 
             <TableRow
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/about_table_row_margin"
                 android:gravity="center_vertical"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="@dimen/about_table_row_padding"
+                android:paddingTop="@dimen/about_table_row_padding">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -89,10 +89,10 @@
                 <ListView
                     android:id="@+id/phone_list"
                     android:layout_width="wrap_content"
-                    android:layout_height="200dp"
+                    android:layout_height="@dimen/phone_list_height"
                     android:layout_weight="1"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="95dp"
+                    android:paddingLeft="@dimen/phone_list_padding_left"
+                    android:paddingRight="@dimen/phone_list_padding_right"
                     android:scrollbars="none" />
 
             </TableRow>
@@ -101,7 +101,7 @@
         <FrameLayout
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="@dimen/about_map_height"
             android:layout_gravity="bottom" />
 
     </LinearLayout>

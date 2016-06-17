@@ -74,7 +74,7 @@ public class AboutFragment extends Fragment implements OnMapReadyCallback {
         if (mAboutInfo != null) {
             mCity.setText(mAboutInfo.getCity());
             mAddress.setText(mAboutInfo.getAddress());
-            mPostalCode.setText(Integer.valueOf(mAboutInfo.getPostal_code()).toString());
+            mPostalCode.setText(String.valueOf(mAboutInfo.getPostal_code()));
 
             ArrayList<String> phoneNumbersList = new ArrayList<String>();
 

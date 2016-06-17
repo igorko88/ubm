@@ -2,12 +2,44 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="internat_item_padding">10dp</dimen>
-    <dimen name="item_margin">8dp</dimen>
     <dimen name="all_needs_page_margin">3dip</dimen>
-    <dimen name="all_needs_name_textsize">18sp</dimen>
-    <dimen name="txt_size_medium">18sp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="item_margin">8dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>-->
     <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="need_name_textsize">18sp</dimen>
+    <dimen name="txt_size_medium">18sp</dimen>
+
+    <dimen name="action_bar_margin">10dp</dimen>
+    <dimen name="action_bar_text_size">18sp</dimen>
+
+    <dimen name="needs_list_padding">10dp</dimen>
+    <dimen name="needs_list_item_padding">5dp</dimen>
+    <dimen name="needs_list_poster_height">300dp</dimen>
+
+    <dimen name="custom_internat_item_width">200dp</dimen>
+    <dimen name="custom_internat_item_height">65dp</dimen>
+    <dimen name="custom_drawer_item_lr_margin">10dp</dimen>
+    <dimen name="custom_drawer_item_tb_margin">1dp</dimen>
+    <dimen name="custom_drawer_item_divider_height">1dp</dimen>
+
+    <dimen name="need_date_margin_top">3dp</dimen>
+    <dimen name="need_poster_margin_top">10dp</dimen>
+    <dimen name="need_poster_height">300dp</dimen>
+    <dimen name="need_details_padding">4dp</dimen>
+
+    <dimen name="progress_bar_size">30dp</dimen>
+    <dimen name="scroll_view_padding">10dp</dimen>
+    <dimen name="load_more_margin_bottom">10dp</dimen>
+
+    <dimen name="about_table_padding">10dp</dimen>
+    <dimen name="about_table_row_margin">2dp</dimen>
+    <dimen name="about_table_row_padding">5dp</dimen>
+
+    <dimen name="phone_list_height">200dp</dimen>
+    <dimen name="phone_list_padding_left">20dp</dimen>
+    <dimen name="phone_list_padding_right">95dp</dimen>
+
+    <dimen name="about_map_height">250dp</dimen>
+
 </resources>

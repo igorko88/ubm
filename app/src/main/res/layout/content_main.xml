@@ -22,8 +22,8 @@
             android:background="@color/needs_backgrouncd_color"
             android:divider="@color/needs_backgrouncd_color"
             android:dividerHeight="8.0sp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingLeft="@dimen/needs_list_padding"
+            android:paddingRight="@dimen/needs_list_padding"
             android:scrollbarStyle="outsideOverlay" />
 
     </android.support.v4.widget.SwipeRefreshLayout>

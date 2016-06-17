@@ -16,16 +16,16 @@
         android:layout_marginRight="@dimen/all_needs_page_margin"
         android:ellipsize="end"
         android:maxLines="2"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:textSize="@dimen/all_needs_name_textsize"
+        android:paddingLeft="@dimen/needs_list_item_padding"
+        android:paddingRight="@dimen/needs_list_item_padding"
+        android:textSize="@dimen/need_name_textsize"
         android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/need_poster"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/need_poster_margin_top"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/needs_list_poster_height"
         android:scaleType="centerCrop"
         android:src="@drawable/default_pictures" />
 

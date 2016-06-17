@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="7dp">
 
@@ -19,12 +19,12 @@
             android:layout_height="match_parent"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:textSize="@dimen/all_needs_name_textsize"
+            android:textSize="@dimen/need_name_textsize"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/need_date"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="@dimen/need_date_margin_top"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textSize="14sp" />
@@ -32,8 +32,8 @@
         <ImageView
             android:id="@+id/need_poster"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="@dimen/need_poster_height"
+            android:layout_marginTop="@dimen/need_poster_margin_top"
             android:scaleType="centerCrop"
             android:src="@drawable/default_pictures" />
 
@@ -41,7 +41,7 @@
             android:id="@+id/need_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp" />
+            android:paddingLeft="@dimen/need_details_padding"
+            android:paddingRight="@dimen/need_details_padding" />
     </LinearLayout>
 </ScrollView>

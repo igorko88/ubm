@@ -6,12 +6,12 @@
     android:orientation="vertical" >
 
     <TextView
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="@dimen/action_bar_margin"
+        android:layout_marginRight="@dimen/action_bar_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/actionbar_text_color"
         android:text="@string/app_name"
-        android:textSize="18sp" />
+        android:textSize="@dimen/action_bar_text_size" />
 
 </LinearLayout>
