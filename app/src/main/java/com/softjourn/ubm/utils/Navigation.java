@@ -16,16 +16,17 @@ import com.softjourn.ubm.activities.NeedActivity;
 import com.softjourn.ubm.fragments.AboutFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Inet on 12.02.2016.
  */
 public class Navigation implements ExtraNames, Consts {
 
-    public static void goToNeedActivity(Activity activity, int position, ArrayList<String> lastUrls) {
+    public static void goToNeedActivity(Activity activity, int position, List<String> lastUrls) {
         Intent intent = new Intent(activity, NeedActivity.class);
         intent.putExtra(LIST_POSITION_EXTRA, position - 1);
-        intent.putStringArrayListExtra(LAST_URL_LIST_EXTRA, lastUrls);
+        intent.putExtra(LAST_URL_LIST_EXTRA, (ArrayList)lastUrls);
         activity.startActivityForResult(intent, RESULT_CODE);
     }
 

@@ -53,12 +53,12 @@ public class NeedActivity extends BaseActivity implements ExtraNames, Consts {
         actionBar.setDisplayShowTitleEnabled(false);
 
         LayoutInflater inflator = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View actionbar_view = inflator.inflate(R.layout.actionbar_custom, null);
-        actionBar.setCustomView(actionbar_view);
+        View actionbarView = inflator.inflate(R.layout.actionbar_custom, null);
+        actionBar.setCustomView(actionbarView);
 
         mDataSource = new DataSource(this);
         mDataSource.openRead();
-        mNeedsCursor = getAllNeedsCursor(mLastUrls);
+        mNeedsCursor = getAllNeeds(mLastUrls);
 
         mPagerAdapter = new CursorPagerAdapter(getSupportFragmentManager(), NeedSlideFragment.class, mNeedsCursor);
         mPager = (ViewPager) findViewById(R.id.needs_pager);
@@ -67,9 +67,7 @@ public class NeedActivity extends BaseActivity implements ExtraNames, Consts {
 
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
@@ -77,9 +75,7 @@ public class NeedActivity extends BaseActivity implements ExtraNames, Consts {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
     }
 

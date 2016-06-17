@@ -12,6 +12,7 @@ import com.softjourn.ubm.beans.about.About;
 import com.softjourn.ubm.beans.about.Phone;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataSource {
 
@@ -38,7 +39,7 @@ public class DataSource {
             mDb.close();
     }
 
-    public void writeNeedsTodb(String updateUrl, ArrayList<Need> needs){
+    public void writeNeedsTodb(String updateUrl, ArrayList<Need> needs) {
         if (needs != null) {
             //write data to db
             openRead();
@@ -114,7 +115,7 @@ public class DataSource {
         return insertId;
     }
 
-    private  long insertObjectInernat(Internat internat){
+    private long insertObjectInernat(Internat internat) {
         long insertId = (-2);
 
         insertId = insertOrUpdateTableInternat(internat);
@@ -154,7 +155,7 @@ public class DataSource {
         return returnedId;
     }
 
-    private long insertOrUpdateTablePhones(ArrayList <Phone> phones) {
+    private long insertOrUpdateTablePhones(ArrayList<Phone> phones) {
         long returnedId = 0;
         ContentValues contentValues = new ContentValues();
 
@@ -239,7 +240,7 @@ public class DataSource {
         return about;
     }
 
-    private ArrayList<Phone> getPhoneList(){
+    private ArrayList<Phone> getPhoneList() {
         String selectQuery = "SELECT * FROM " + DataBaseHelper.TABLE_PHONES;
         Cursor phoneCursor = mDb.rawQuery(selectQuery, null);
         ArrayList<Phone> phonesList = new ArrayList<Phone>();
@@ -277,7 +278,7 @@ public class DataSource {
         } else return null;
     }
 
-    private Need cursorToNeed(Cursor cursor) {
+    public Need cursorToNeed(Cursor cursor) {
 
         if (cursor != null && cursor.getCount() != 0) {
             Need need = new Need();
@@ -291,9 +292,9 @@ public class DataSource {
         } else return null;
     }
 
-    public ArrayList<Internat> getAllInternats() {
+    public List<Internat> getAllInternats() {
 
-        ArrayList<Internat> internatList = new ArrayList<Internat>();
+        List<Internat> internatList = new ArrayList<Internat>();
         String selectQuery = "SELECT  * FROM " + DataBaseHelper.TABLE_INTERNATS;
 
         openRead();
@@ -309,7 +310,7 @@ public class DataSource {
         return internatList;
     }
 
-    public Cursor getFoundNeewsByUrl(ArrayList<String> urls) {
+    public Cursor getNeedsByUrl(List<String> urls) {
         openRead();
         String query = "SELECT * FROM needs";
 
@@ -340,33 +341,36 @@ public class DataSource {
         return cursor;
     }
 
-    public Cursor getNeedsUIByUrlInternatId(ArrayList<String> lastUrls, long internat_id) {
-        ArrayList<Need> needsList = new ArrayList<Need>();
+    public Cursor getNeedsUIByUrlInternatId(List<String> lastUrls, long internat_id) {
+        List<Need> needsList = new ArrayList<Need>();
 
         openRead();
         Cursor cursor;
 
-        if (internat_id == 0) {
-            String query = "SELECT * FROM needs";
-            String subQuery = "";
+        String query = "SELECT * FROM needs";
+        String whereQuery = " WHERE needs.internat_id='" + internat_id + "'";
+
+        String cursorQuery;
+
+        if(!lastUrls.isEmpty()){
+            String subQuery = " AND";
 
             for (int i = 0; i < lastUrls.size(); i++) {
                 if (i == 0) {
-                    subQuery += " WHERE needs.special_parameters='" + lastUrls.get(i) + "'";
+                    subQuery += " needs.special_parameters='" + lastUrls.get(i) + "'";
                 } else {
                     subQuery += " OR needs.special_parameters='" + lastUrls.get(i) + "'";
                 }
             }
 
-            String cursorQuery = query + subQuery + ";";
-            cursor = mDb.rawQuery(cursorQuery, null);
-        } else {
-            String query = "SELECT * FROM needs";
-            String whereQuery = " WHERE needs.internat_id='" + internat_id + "'";
-
-            String cursorQuery = query + whereQuery + ";";
-            cursor = mDb.rawQuery(cursorQuery, null);
+            cursorQuery = query + whereQuery + subQuery + ";";
+        }else{
+            cursorQuery = query + whereQuery + ";";
         }
+
+
+
+        cursor = mDb.rawQuery(cursorQuery, null);
 
         cursor.moveToFirst();
 
@@ -379,7 +383,7 @@ public class DataSource {
         return cursor;
     }
 
-    public Cursor getNeedUI() {
+    public Cursor getAllNeeds() {
         openRead();
 
         String selectQuery = "SELECT  * FROM " + DataBaseHelper.TABLE_NEEDS;
@@ -387,7 +391,7 @@ public class DataSource {
         return cursor;
     }
 
-    public Cursor getNeedUI(ArrayList<String> urls) {
+    public Cursor getAllNeeds(List<String> urls) {
         openRead();
 
         String query = "SELECT * FROM needs";

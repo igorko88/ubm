@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.softjourn.ubm.R;
+import com.softjourn.ubm.beans.Need;
 import com.softjourn.ubm.database.DataSource;
+import com.softjourn.ubm.database.DatabaseManager;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Inet on 15.03.2016.
@@ -17,40 +19,27 @@ public class BaseActivity extends AppCompatActivity {
 
     protected DataSource mDataSource;
     protected Cursor mNeedsCursor;
-    private ArrayList<String> mLastUrls;
+    private List<String> mLastUrls;
     private ProgressDialog mProgressDialog;
+    private DatabaseManager mDatabaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDataSource = new DataSource(BaseActivity.this);
+        mDatabaseManager = new DatabaseManager();
     }
 
-    public Cursor getFoundNeedsCursor(ArrayList<String> lastUrls) {
-        mNeedsCursor = mDataSource.getFoundNeewsByUrl(lastUrls);
-
-        return mNeedsCursor;
+    protected List<Need> getNeeds(List<String> lastUrls) {
+        return mDatabaseManager.getAllNeedsList(lastUrls);
     }
 
-    public Cursor getAllNeedsCursor() {
-        mNeedsCursor = mDataSource.getNeedUI();
-        return mNeedsCursor;
+    protected List<Need> getOneInternatNeeds(List<String> lastUrls, int internatId) {
+        return mDatabaseManager.getOneInternatNeedsList(lastUrls, internatId);
     }
 
-    public Cursor getAllNeedsCursor(ArrayList<String> lastUrls) {
-        mNeedsCursor = mDataSource.getNeedUI(lastUrls);
-
-        return mNeedsCursor;
-    }
-
-    public Cursor getCursorByUrlInternatId(ArrayList<String> lastUrls, int internatId) {
-        mNeedsCursor = mDataSource.getNeedsUIByUrlInternatId(lastUrls, internatId);
-
-        return mNeedsCursor;
-    }
-
-    public Cursor getCursorByInternatId(int internatId) {
-        mNeedsCursor = mDataSource.getNeedsByInternatId(internatId);
+    public Cursor getAllNeeds(List<String> lastUrls) {
+        mNeedsCursor = mDataSource.getAllNeeds(lastUrls);
 
         return mNeedsCursor;
     }
@@ -59,11 +48,11 @@ public class BaseActivity extends AppCompatActivity {
         mDataSource.removeAll();
     }
 
-    public ArrayList<String> getLastUrls() {
+    public List<String> getLastUrls() {
         return mLastUrls;
     }
 
-    public void setLastUrls(ArrayList<String> lastUrls) {
+    public void setLastUrls(List<String> lastUrls) {
         mLastUrls = lastUrls;
     }
 

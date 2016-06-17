@@ -1,16 +1,16 @@
 package com.softjourn.ubm.activities;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,13 +34,11 @@ import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.softjourn.ubm.R;
 import com.softjourn.ubm.adapters.NeedsListAdapter;
 import com.softjourn.ubm.application.AppController;
 import com.softjourn.ubm.beans.Internat;
+import com.softjourn.ubm.beans.Need;
 import com.softjourn.ubm.database.DataSource;
 import com.softjourn.ubm.fragments.AboutFragment;
 import com.softjourn.ubm.fragments.MainFragment;
@@ -52,7 +50,8 @@ import com.softjourn.ubm.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ExtraNames, Consts, NavigationView.OnNavigationItemSelectedListener, JsonRequests.OnTaskCompleted {
+public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
+        ExtraNames, Consts, NavigationView.OnNavigationItemSelectedListener, JsonRequests.OnTaskCompleted {
 
     private static final int PERMISSIONS_REQUEST_EXTERNAL_STORAGE = 0;
 
@@ -64,7 +63,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private ArrayList<String> mLeftMenuItems;
     private ListView mNeedsListView;
     private View mFooterView;
-    private NeedsListAdapter mNeedsAdapter;
     private List<Internat> mInternats;
     private DataSource mDataSource;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -77,10 +75,10 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private boolean mMenuClick;
     private DrawerLayout mDrawerLayout;
     private CoordinatorLayout mCoordinatorLayout;
-
     boolean isLoad = false;
     boolean isSearch = false;
     private Snackbar mSnackbar;
+    private NeedsListAdapter mNeedsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +90,11 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mNeedsListView = (ListView) findViewById(R.id.needs_list);
+        mFooterView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_view, null, false);
+        mNeedsListView.setEmptyView(findViewById(R.id.no_needs_to_display));
+        addNeedsListPaddings();
 
         if (savedInstanceState != null) {
             mSavedInstanceState = savedInstanceState;
@@ -106,15 +109,15 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
             if (mLastUrls != null) {
                 setLastUrls(mLastUrls);
-
-                Cursor allNeedsCursor = getAllNeedsCursor(mLastUrls);
-                if (mNeedsAdapter == null) {
-                    mNeedsAdapter = new NeedsListAdapter(MainActivity.this, allNeedsCursor);
-                }
-
-                mNeedsAdapter.changeCursor(allNeedsCursor);
-                mNeedsAdapter.notifyDataSetChanged();
+            }else{
+                mLastUrls = new ArrayList<String>();
+                mLastUrls.add(ALL_NEEDS_URL);
+                setLastUrls(mLastUrls);
             }
+
+            List<Need> allNeeds = getNeeds(mLastUrls);
+            mNeedsAdapter = new NeedsListAdapter(MainActivity.this, allNeeds);
+            mNeedsListView.setAdapter(mNeedsAdapter);
 
             if (mSelectedInternatPosition == ABOUT_US) {
                 Navigation.gotoAboutScreen(MainActivity.this);
@@ -125,11 +128,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
         mDataSource = new DataSource(this);
         mDataSource.openRead();
-
-        mNeedsListView = (ListView) findViewById(R.id.needs_list);
-        mFooterView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_view, null, false);
-        mNeedsListView.setEmptyView(findViewById(R.id.no_needs_to_display));
-        addNeedsListPaddings();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -179,7 +177,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
                 int lastInScreen = firstVisibleItem + visibleItemCount;
 
-                if ((totalItemCount > 2) && (lastInScreen == totalItemCount) && !isSearch) {
+                if ((visibleItemCount > 0) && (lastInScreen == totalItemCount) && !isSearch) {
                     if (Utils.isOnline(getApplicationContext())) {
 
                         isLoad = true;
@@ -199,14 +197,12 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
             if (mSavedInstanceState != null) {
                 initInternatsMenu();
-                initNeedsList();
             } else {
                 clearDB();
                 new JsonRequests().loadInternstsRequest(getApplicationContext(), MainActivity.this);
             }
         } else {
             Toast.makeText(getApplicationContext(), R.string.offline_mode, Toast.LENGTH_SHORT).show();
-            initNeedsList();
             initInternatsMenu();
         }
 
@@ -218,7 +214,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         if (!Utils.isOnline(AppController.getInstance())) {
             Toast.makeText(AppController.getInstance(), R.string.offline_mode, Toast.LENGTH_SHORT).show();
         } else {
-            ArrayList<String> lastUrls = getLastUrls();
+            List<String> lastUrls = getLastUrls();
             if (lastUrls != null && lastUrls.size() > 0) {
                 String updateUrl = lastUrls.get(0);
                 new JsonRequests().updateRequest(getApplicationContext(), updateUrl, MainActivity.this);
@@ -372,7 +368,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onLoadAllNeedsCompleted(String allNeedsUrl) {
-        ArrayList<String> lastUrls = getLastUrls();
+        List<String> lastUrls = getLastUrls();
         if (!lastUrls.contains(allNeedsUrl)) {
             lastUrls.add(allNeedsUrl);
         }
@@ -385,7 +381,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onLoadOneInternatNeedsCompleted(String oneInternatNeeds, int internatId) {
-        ArrayList<String> lastUrls = getLastUrls();
+        List<String> lastUrls = getLastUrls();
         if (!lastUrls.contains(oneInternatNeeds)) {
             lastUrls.add(oneInternatNeeds);
         }
@@ -397,7 +393,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onLoadMoreCompleted(String moreNeedsUrl) {
-        ArrayList<String> lastUrls = getLastUrls();
+        List<String> lastUrls = getLastUrls();
         if (!lastUrls.contains(moreNeedsUrl)) {
             lastUrls.add(moreNeedsUrl);
         }
@@ -415,11 +411,11 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onLoadSearchCompleted(String searchUrl) {
-        ArrayList<String> urlList = new ArrayList<String>();
+        List<String> urlList = new ArrayList<String>();
         urlList.add(searchUrl);
 
-        Cursor foundNeedsCursor = getFoundNeedsCursor(urlList);
-        mNeedsAdapter = new NeedsListAdapter(MainActivity.this, foundNeedsCursor);
+        List<Need> foundNeeds = getNeeds(urlList);
+        mNeedsAdapter = new NeedsListAdapter(MainActivity.this, foundNeeds);
         mNeedsListView.setAdapter(mNeedsAdapter);
         setLastUrls(urlList);
 
@@ -505,72 +501,45 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         };
     }
 
-    private void initNeedsList() {
-        if (mLastUrls == null) {
-            String allNeedsUrl = ALL_NEEDS_URL;
-            mLastUrls = new ArrayList();
-            mLastUrls.add(allNeedsUrl);
+    private void displayAllNeeds(List<String> urlList) {
+
+        List<Need> allNeeds = getNeeds(urlList);
+
+        if(mNeedsAdapter == null) {
+            mNeedsAdapter = new NeedsListAdapter(MainActivity.this, allNeeds);
+            mNeedsListView.setAdapter(mNeedsAdapter);
+        }else {
+            allNeeds = getNeeds(urlList);
+            mNeedsAdapter.setData(allNeeds);
+            mNeedsAdapter.notifyDataSetChanged();
         }
 
-        Cursor allNeedsCursor = getAllNeedsCursor(mLastUrls);
-        if (mNeedsAdapter == null) {
-            mNeedsAdapter = new NeedsListAdapter(MainActivity.this, allNeedsCursor);
-        }
-        mNeedsAdapter.changeCursor(allNeedsCursor);
-        mNeedsAdapter.notifyDataSetChanged();
-        mNeedsListView.setAdapter(mNeedsAdapter);
+        setLastUrls(urlList);
+
+        hideProgessDialog();
         mSwipeRefreshLayout.setRefreshing(false);
 
-        setSelectedNeed();
+        isSearch = true;
+    }
 
-        setLastUrls(mLastUrls);
+    private void displayOneInternatNeeds(List<String> urlList, int internatId) {
+        List<Need> oneInternatNeeds = getOneInternatNeeds(urlList, internatId);
+
+        if(mNeedsAdapter == null) {
+            mNeedsAdapter = new NeedsListAdapter(MainActivity.this, oneInternatNeeds);
+            mNeedsListView.setAdapter(mNeedsAdapter);
+        }else {
+            oneInternatNeeds = getOneInternatNeeds(urlList, internatId);
+            mNeedsAdapter.setData(oneInternatNeeds);
+            mNeedsAdapter.notifyDataSetChanged();
+        }
+
+        setLastUrls(urlList);
+
         hideProgessDialog();
-    }
+        mSwipeRefreshLayout.setRefreshing(false);
 
-    private void setSelectedNeed() {
-        if (mMenuClick) {
-            mNeedsListView.setSelection(0);
-        } else {
-            mNeedsListView.setSelection(mSelectedNeedListPosition);
-        }
-    }
-
-
-    private void displayAllNeeds(ArrayList<String> lastUrls) {
-        Cursor allNeedsCursor;
-        if (Utils.isOnline(getApplicationContext())) {
-            allNeedsCursor = getAllNeedsCursor(lastUrls);
-        } else {
-            allNeedsCursor = getAllNeedsCursor();
-        }
-
-        if (mNeedsAdapter == null) {
-            mNeedsAdapter = new NeedsListAdapter(MainActivity.this, allNeedsCursor);
-        }
-
-        mNeedsAdapter.changeCursor(allNeedsCursor);
-
-        setSelectedNeed();
-        hideProgessDialog();
-    }
-
-    private void displayOneInternatNeeds(ArrayList<String> lastUrls, int internatId) {
-
-        Cursor oneNeedsCursor;
-
-        if (Utils.isOnline(getApplicationContext())) {
-            oneNeedsCursor = getCursorByUrlInternatId(lastUrls, internatId);
-        } else {
-            oneNeedsCursor = getCursorByInternatId(internatId);
-        }
-
-        if (mNeedsAdapter == null) {
-            mNeedsAdapter = new NeedsListAdapter(MainActivity.this, oneNeedsCursor);
-        }
-
-        mNeedsAdapter.changeCursor(oneNeedsCursor);
-        mNeedsAdapter.notifyDataSetChanged();
-        setSelectedNeed();
+        isSearch = true;
     }
 
     private void displayAboutInfo() {
@@ -610,7 +579,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         }
 
         if (getLastUrls() != null) {
-            outState.putStringArrayList(LAST_URL_LIST_EXTRA, getLastUrls());
+            outState.putStringArrayList(LAST_URL_LIST_EXTRA, (ArrayList<String>) getLastUrls());
         }
 
         outState.putInt(INTERNAT_POSITION_EXTRA, mSelectedInternatPosition);
@@ -648,9 +617,9 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mSnackbar.show();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     private void requestAppRunTimePermissions() {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
     }
 }
-
